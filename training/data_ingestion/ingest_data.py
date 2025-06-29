@@ -8,7 +8,7 @@ from utils.config_reader import ConfigReader
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from typing import Tuple, List
-
+from utils.custom_transform import get_training_transforms, get_test_val_transforms, TransformDataset
 
 class DataIngestor:
     def __init__(self, config_file: str):
@@ -24,37 +24,9 @@ class DataIngestor:
         if not self.dataset_path:
             raise ValueError("Output path is not specified in the configuration file.")
         
-        self.transform = self._get_transforms()
         self.full_dataset = self._load_dataset()
         self.class_names = self.full_dataset.classes
         self.num_classes = len(self.class_names)
-
-
-    def _get_trainig_transforms(self):
-
-        """Returns the default trainig transforms for img_classification model like ResNet-50, EfficientNet-B0"""
-        
-        return transforms.Compose([
-            transforms.RandomResizedCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize(
-        mean=[0.485, 0.456, 0.406],
-        std=[0.229, 0.224, 0.225])                              
-        ])
-    
-    def _get_test_val_transforms(self):
-
-        """Returns the default testing and validation transforms for img_classification model like ResNet-50, EfficientNet-B0"""
-
-        return transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize(
-        mean=[0.485, 0.456, 0.406],
-        std=[0.229, 0.224, 0.225])
-        ])
 
 
     def _load_dataset(self):
@@ -65,9 +37,14 @@ class DataIngestor:
     
     def get_dataloaders(self) -> Tuple[DataLoader, DataLoader]:
         """Splits the dataset and returns training and validation DataLoaders."""
-
+        print(len(self.full_dataset))
         torch.manual_seed(self.seed)
-        train_dataset, test_dataset, val_dataset = random_split(self.full_dataset, [self.train_ratio, self.test_ratio, self.val_ratio])
+        train_data, test_data, val_data= random_split(self.full_dataset, [self.train_ratio, self.test_ratio, self.val_ratio])
+
+        train_dataset = TransformDataset(train_data, get_training_transforms())
+        test_dataset = TransformDataset(test_data, get_test_val_transforms())
+        val_dataset = TransformDataset(val_data, get_test_val_transforms())
+        print("dataset after transformation: ", val_dataset)
 
         train_loader = DataLoader(
             train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers
@@ -78,6 +55,8 @@ class DataIngestor:
         val_loader = DataLoader(
             val_dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_workers
         )
+
+        print("data loader successful", train_loader)
 
         return train_loader, test_loader, val_loader
     
@@ -99,11 +78,10 @@ def main():
     train_loader, test_loader, val_loader = loader.get_dataloaders()
     
     print(f"Train samples: {len(train_loader.dataset)}")
-    print(f"Test samples: {len(test_loader.datasets)}")
+    print(f"Test samples: {len(test_loader.dataset)}")
     print(f"Validation samples: {len(val_loader.dataset)}")
     
     
 if __name__ == "__main__":
     main()
-
     
