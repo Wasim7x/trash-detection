@@ -13,15 +13,15 @@ This repository contains an end-to-end pipeline for detecting trash (e.g., plast
 ---
 
 ## 📁 Folder Structure
-
+```plaintext
 trash-detection/
-├── data/ # Raw and preprocessed data
-├── labels/ # Annotations from Labelbox
-├── model/ # Trained model files (.pth/.pt)
-├── notebook/ # Jupyter notebooks for EDA, training, etc.
-├── src/ # Source code: training, inference, utils
-│ ├── train.py
-│ ├── predict.py
-│ └── utils.py
-├── requirements.txt # Python dependencies
-└── README.md # Project documentation
+├── data/             # Raw and preprocessed data
+├── labels/           # Annotations from Labelbox
+├── model/            # Trained model files (.pth/.pt)
+├── notebook/         # Jupyter notebooks for EDA, training, etc.
+├── src/              # Source code: training, inference, utils
+│   ├── train.py
+│   ├── predict.py
+│   └── utils.py
+├── requirements.txt  # Python dependencies
+└── README.md         # Project documentation
