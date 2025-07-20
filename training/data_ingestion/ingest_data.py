@@ -14,9 +14,9 @@ class DataIngestor:
     def __init__(self, config_file: str):
         self.confg = ConfigReader.get_config(config_file)
         self.verbose = self.confg.get("verbose", False)
-        self.train_ratio = self.confg.get("train_ratio", 0.8)
-        self.val_ratio = self.confg.get("val_ratio", 0.1)
-        self.test_ratio = self.confg.get("test_ratio", 0.1)
+        self.train_ratio = self.confg.get("train_ratio", 0.1)
+        self.val_ratio = self.confg.get("val_ratio", 0.05)
+        self.test_ratio = 1 - (self.train_ratio + self.val_ratio)
         self.seed = self.confg.get("seed", 42)
         self.batch_size = self.confg.get("batch_size", 32)
         self.num_workers= self.confg.get("num_workers",4)

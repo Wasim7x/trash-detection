@@ -21,6 +21,7 @@ def get_test_val_transforms():
                              std=[0.229, 0.224, 0.225])
     ])
 
+
 class TransformDataset(Dataset):
     def __init__(self, dataset, transform):
         self.dataset = dataset

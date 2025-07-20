@@ -1,3 +1,10 @@
-dataset_id: 'datafiniti/consumer-reviews-of-amazon-products'
+dataset_id: 'sumn2u/garbage-classification-v2'
 verbose: false
-
+num_epochs: 25
+learnig_rate: 0.0001
+train_ratio: 0.8
+val_ratio: 0.1
+seed: 42
+batch_size: 32
+num_workers: 4
+patience: 4

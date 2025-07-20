@@ -1,0 +1,6 @@
+DATA_DIR: "training\\validation_output\\battery"
+MODEL_PATH: "model\\ResNet50.pt"
+CLASS_NAMES: ["cloth", "metal", "glass", "plastic", "bio", "cardboard", "paper", "trash", "shoes", "other"]
+OUTPUT_DIR: output
+batch_size: 32
+num_classes: 10

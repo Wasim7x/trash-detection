@@ -11,6 +11,8 @@ sys.path[0] = str(Path(__file__).resolve().parent.parent)
 from utils.config_reader import ConfigReader
 from utils.file_counter import FileCounter
 
+destination_path = Path(Path(__file__).resolve().parent.parent.parent) 
+
 class ImageDownloader:
     """
     downloads images from a specified source and saves them to working directory
@@ -19,6 +21,7 @@ class ImageDownloader:
         self.config = ConfigReader.get_config(config_file)
         self.verbose = self.config.get("verbose", False)
         self.path = self.download_images()
+        self.destination_path = destination_path
     
     def download_images(self) -> str:
         """
@@ -45,12 +48,12 @@ class ImageDownloader:
 
  
 
-    def lodad_images_local(self, destination_path: Path):
+    def lodad_images_local(self):
         source_path = Path(self.path)
         
-        print("destination" ,destination_path)
+        print("destination" ,self.destination_path)
         try:
-            shutil.copytree(src=source_path, dst=destination_path, dirs_exist_ok=True)
+            shutil.copytree(src=source_path, dst=self.destination_path, dirs_exist_ok=True)
             # with open(self.config_file, 'w') as f:
             #     yaml.dump({"output_path": str(destination_path)}, f)
         except Exception as e:
